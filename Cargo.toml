@@ -1,0 +1,58 @@
+[package]
+name = "mlx-d1-gestures-rs"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.87"
+authors = ["Brandon Hubbard <brandon@brandonhubbard.com>"]
+description = "Pure-Rust Apple Silicon MLX port of mlx-d1-gestures: live webcam hand gesture, facial expression, and bounding-box recognition in one zero-token forward pass using LiquidAI/d1-2B"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/bhubbard/mlx-d1-gestures-rs"
+keywords = ["mlx", "apple-silicon", "liquid-ai", "d1", "gestures"]
+categories = ["science", "computer-vision", "web-programming::http-server"]
+
+[lib]
+name = "mlx_d1_gestures"
+path = "src/lib.rs"
+
+[[bin]]
+name = "mlx-d1-gestures"
+path = "src/bin/mlx_d1_gestures.rs"
+
+[dependencies]
+anyhow = "1.0"
+axum = "0.8"
+clap = { version = "4.5", features = ["derive", "env"] }
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "webp"] }
+indexmap = { version = "2.7", features = ["serde"] }
+indicatif = "0.17"
+mlx-rs = { version = "0.34.0", default-features = false, features = ["safetensors"] }
+regex = "1.11"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+thiserror = "2.0"
+tokenizers = { version = "0.23", default-features = false, features = ["onig"] }
+tokio = { version = "1.40", features = ["macros", "net", "rt-multi-thread", "signal", "sync"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+ureq = { version = "3.0", features = ["json"] }
+
+[features]
+default = ["accelerate"]
+accelerate = ["mlx-rs/accelerate"]
+metal = ["mlx-rs/metal"]
+metal-jit = ["mlx-rs/metal-jit"]
+
+[dev-dependencies]
+http-body-util = "0.1"
+tempfile = "3.12"
+tower = { version = "0.5", features = ["util"] }
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_debug_implementations = "warn"
+
+[lints.clippy]
+dbg_macro = "warn"
+todo = "warn"
+unimplemented = "warn"
